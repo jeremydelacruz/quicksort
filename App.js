@@ -1,39 +1,26 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
   Text,
-  StatusBar,
+  Alert,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-export default class BlinkApp extends Component {
+import Header from './src/components/Header';
+import MainScreenButton from './src/components/MainScreenButton';
+
+import CameraIcon from './src/images/cameraIcon.png';
+import LearnMoreIcon from './src/images/learnMoreIcon.png';
+
+export default class MainApp extends Component {
   constructor(props) {
     super(props);
 
     this.styles = StyleSheet.create({
-      scrollView: {
-        backgroundColor: Colors.lighter,
-      },
-      engine: {
-        position: 'absolute',
-        right: 0,
-      },
-      body: {
-        backgroundColor: Colors.white,
-        flex: 0.2,
-      },
-      sectionContainer: {
-        marginTop: 32,
-        paddingHorizontal: 24,
-      },
       sectionTitle: {
         fontSize: 24,
         fontWeight: '600',
@@ -48,14 +35,6 @@ export default class BlinkApp extends Component {
       highlight: {
         fontWeight: '700',
       },
-      footer: {
-        color: Colors.dark,
-        fontSize: 12,
-        fontWeight: '600',
-        padding: 4,
-        paddingRight: 12,
-        textAlign: 'right',
-      },
     });
 
     this.state = {
@@ -63,38 +42,44 @@ export default class BlinkApp extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     fetch('https://quicksort-api.azurewebsites.net/api/?name=Gui')
-        .then(response => response.json())
-        .then(response => {
-          this.setState({
-            isShowingText: response,
-          });
+      .then(response => response.json())
+      .then(response => {
+        this.setState({
+          isShowingText: response,
         });
+      });
+  }
+
+  onPressButton() {
+    Alert.alert('You tapped the button!');
   }
 
   render() {
     return (
-      <Fragment>
-        <StatusBar barStyle="dark-content" />
-        <SafeAreaView>
-          <ScrollView
-            contentInsetAdjustmentBehavior="automatic"
-            style={this.styles.scrollView}>
-            <Header />
-            {global.HermesInternal == null ? null : (
-              <View style={this.styles.engine}>
-                <Text style={this.styles.footer}>Engine: Hermes</Text>
-              </View>
-            )}
-            <View style={this.styles.body}>
-              <View style={this.styles.sectionContainer}>
-                <Text style={this.styles.sectionTitle}>{this.state.isShowingText}</Text>
-              </View>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Header />
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+        >
+          <View>
+            <View>
+              <Text style={this.styles.sectionTitle}>{this.state.isShowingText}</Text>
             </View>
-          </ScrollView>
-        </SafeAreaView>
-      </Fragment>
+            <MainScreenButton
+              displayText="Take a Picture"
+              onPressButton={this.onPressButton}
+              image={CameraIcon}
+            />
+            <MainScreenButton
+              displayText="Learn More"
+              onPressButton={this.onPressButton}
+              image={LearnMoreIcon}
+            />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 }
