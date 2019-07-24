@@ -6,15 +6,23 @@ import {
   View,
   Text,
   StatusBar,
+<<<<<<< HEAD
   TouchableOpacity,
+=======
+>>>>>>> 037378db9f73fa738323b9449db12cfc5daa582e
   Alert
 } from 'react-native';
 
-import { Header, Colors } from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import Camera from './src/components/Camera';
+import Header from './src/components/Header';
+import MainScreenButton from './src/components/MainScreenButton';
 
-export default class BlinkApp extends Component {
+import CameraIcon from './src/images/cameraIcon.png';
+import LearnMoreIcon from './src/images/learnMoreIcon.png';
+
+export default class MainApp extends Component {
   constructor(props) {
     super(props);
     this.enterCamera = this.enterCamera.bind(this);
@@ -22,52 +30,24 @@ export default class BlinkApp extends Component {
     this.sendPhoto = this.sendPhoto.bind(this);
 
     this.styles = StyleSheet.create({
-      engine: {
-        position: 'absolute',
-        right: 0
-      },
-      body: {
-        backgroundColor: Colors.white,
-        flex: 1
-      },
-      sectionContainer: {
-        marginTop: 32,
-        paddingHorizontal: 24
-      },
       sectionTitle: {
         fontSize: 24,
         fontWeight: '600',
         color: Colors.black
       },
       sectionDescription: {
-        marginTop: 8,
-        fontSize: 18,
+        marginTop: 35,
+        paddingTop: 10,
+        paddingBottom: 10,
+        fontSize: 15,
         fontWeight: '400',
-        color: Colors.dark
+        color: Colors.dark,
+        backgroundColor: Colors.light,
+        textAlign: 'center',
+        fontFamily: 'sans-serif-light',
       },
       highlight: {
         fontWeight: '700'
-      },
-      footer: {
-        color: Colors.dark,
-        fontSize: 12,
-        fontWeight: '600',
-        padding: 4,
-        paddingRight: 12,
-        textAlign: 'right'
-      },
-      container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'white',
-      },
-      button: {
-        alignItems: 'center',
-        backgroundColor: '#DDDDDD',
-        padding: 10,
-        width: 100,
-        marginTop: 16,
       },
     });
 
@@ -140,42 +120,32 @@ export default class BlinkApp extends Component {
         onExitCamera={this.exitCamera}
       />);
     } else {
-      returnValue = (<ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-      >
-        <Header />
-        <View style={this.styles.body}>
-          <View style={this.styles.sectionContainer}>
-            <Text style={this.styles.sectionTitle}>
-              {this.state.isShowingText}
+      returnValue = (
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+        >
+          <Header />
+          <View>
+            <Text style={this.styles.sectionDescription}>
+              Take a picture down below to identify your object as Compost, Recycle, or Landfill.
             </Text>
+            <MainScreenButton
+              displayText="Take a Picture"
+              onPressButton={this.enterCamera}
+              image={CameraIcon}
+            />
+            <MainScreenButton
+              displayText="Learn More"
+              onPressButton={this.confirmPhoto}
+              image={LearnMoreIcon}
+            />
           </View>
-          <View style={this.styles.container}>
-            <TouchableOpacity
-              style={this.styles.button}
-              onPress={this.enterCamera}
-            >
-              <Text>Open Camera</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={this.styles.container}>
-            <TouchableOpacity
-              style={this.styles.button}
-              onPress={this.confirmPhoto}
-            >
-              <Text>Confirm Photo (Test)</Text>
-            </TouchableOpacity>
-            <Text>{JSON.stringify(this.state.photoResponse)}</Text>
-          </View>
-
-        </View>
-      </ScrollView>);
+        </ScrollView>);
     }
     return (
       <Fragment>
         <StatusBar barStyle="dark-content" />
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#F0F0F0' }}>
           {returnValue}
         </SafeAreaView>
       </Fragment>
