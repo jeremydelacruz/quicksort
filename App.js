@@ -17,18 +17,16 @@ export default class BlinkApp extends Component {
   constructor(props) {
     super(props);
     this.enterCamera = this.enterCamera.bind(this);
+    this.exitCamera = this.exitCamera.bind(this);
 
     this.styles = StyleSheet.create({
-      scrollView: {
-        backgroundColor: Colors.lighter
-      },
       engine: {
         position: 'absolute',
         right: 0
       },
       body: {
         backgroundColor: Colors.white,
-        flex: 0.2
+        flex: 1
       },
       sectionContainer: {
         marginTop: 32,
@@ -77,16 +75,6 @@ export default class BlinkApp extends Component {
     };
   }
 
-  componentDidMount() {
-    fetch('https://quicksort-api.azurewebsites.net/api/?name=Gui')
-      .then(response => response.json())
-      .then(response => {
-        this.setState({
-          isShowingText: response
-        });
-      });
-  }
-
   enterCamera() {
     this.setState({
       isCameraOpen: true,
@@ -103,20 +91,13 @@ export default class BlinkApp extends Component {
     let returnValue = '';
     if (this.state.isCameraOpen) {
       returnValue = (<Camera
-        onEnterCamera={this.enterCamera}
         onExitCamera={this.exitCamera}
       />);
     } else {
       returnValue = (<ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={this.styles.scrollView}
       >
         <Header />
-        {global.HermesInternal == null ? null : (
-          <View style={this.styles.engine}>
-            <Text style={this.styles.footer}>Engine: Hermes</Text>
-          </View>
-        )}
         <View style={this.styles.body}>
           <View style={this.styles.sectionContainer}>
             <Text style={this.styles.sectionTitle}>
@@ -137,7 +118,7 @@ export default class BlinkApp extends Component {
     return (
       <Fragment>
         <StatusBar barStyle="dark-content" />
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
           {returnValue}
         </SafeAreaView>
       </Fragment>

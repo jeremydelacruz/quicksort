@@ -4,21 +4,38 @@ import {
   Platform,
   PermissionsAndroid,
   Alert,
+  View,
+  Text,
+  StyleSheet
 } from 'react-native';
 
 import { CameraKitCameraScreen } from 'react-native-camera-kit';
 
 import Logo from 'react-native/Libraries/NewAppScreen/components/logo.png';
+import CameraCaptureIcon from '../images/cameraCaptureIcon.png';
 
 export default class Camera extends Component {
   constructor(props) {
     super(props);
+    this.onPress();
+
+    this.styles = StyleSheet.create({
+      sectionContainer: {
+        marginTop: 32,
+        paddingHorizontal: 24
+      },
+      sectionTitle: {
+        fontSize: 24,
+        fontWeight: '600',
+        color: 'black'
+      },
+    });
 
     this.state = {
       isPermitted: false,
     };
   }
-  componentDidMount() {
+  onPress() {
     const that = this;
     if (Platform.OS === 'android') {
       async function requestCameraPermission() {
@@ -89,12 +106,16 @@ export default class Camera extends Component {
       // Calling the camera permission function
       requestCameraPermission();
     } else {
-      this.state = { isPermitted: true };
+      Alert.alert('GOT HERE');
+      this.setState({ isPermitted: true });
     }
   }
   onBottomButtonPressed(event) {
     const captureImages = JSON.stringify(event.captureImages);
     if (event.type === 'left') {
+      this.props.onExitCamera();
+      this.setState({ isPermitted: false });
+    } if (event.type === 'right') {
       this.props.onExitCamera();
       this.setState({ isPermitted: false });
     } else {
@@ -108,21 +129,30 @@ export default class Camera extends Component {
   }
 
   render() {
+    if (this.state.isPermitted) {
+      return (
+        <CameraKitCameraScreen
+          // Buttons to perform action done and cancel
+          actions={{ rightButtonText: 'Done', leftButtonText: 'Cancel' }}
+          onBottomButtonPressed={event => this.onBottomButtonPressed(event)}
+          flashImages={{
+            // Flash button images
+            on: Logo,
+            off: Logo,
+            auto: Logo,
+          }}
+          cameraFlipImage={Logo}
+          captureButtonImage={CameraCaptureIcon}
+        />
+      );
+    }
+
     return (
-      <CameraKitCameraScreen
-        style={{ flex: 1, resizeMode: 'cover' }}
-        // Buttons to perform action done and cancel
-        actions={{ rightButtonText: 'Done', leftButtonText: 'Cancel' }}
-        onBottomButtonPressed={event => this.onBottomButtonPressed(event)}
-        flashImages={{
-        // Flash button images
-          on: Logo,
-          off: Logo,
-          auto: Logo,
-        }}
-        cameraFlipImage={Logo}
-        captureButtonImage={Logo}
-      />
+      <View style={this.styles.sectionContainer}>
+        <Text style={this.styles.sectionTitle}>
+          {this.state.isShowingText}
+        </Text>
+      </View>
     );
   }
 }
