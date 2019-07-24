@@ -17,7 +17,10 @@ import CameraCaptureIcon from '../images/cameraCaptureIcon.png';
 export default class Camera extends Component {
   constructor(props) {
     super(props);
-    this.onPress();
+
+    this.state = {
+      isPermitted: false,
+    };
 
     this.styles = StyleSheet.create({
       sectionContainer: {
@@ -30,11 +33,12 @@ export default class Camera extends Component {
         color: 'black'
       },
     });
-
-    this.state = {
-      isPermitted: false,
-    };
   }
+
+  componentDidMount() {
+    this.onPress();
+  }
+
   onPress() {
     const that = this;
     if (Platform.OS === 'android') {
@@ -106,7 +110,6 @@ export default class Camera extends Component {
       // Calling the camera permission function
       requestCameraPermission();
     } else {
-      Alert.alert('GOT HERE');
       this.setState({ isPermitted: true });
     }
   }

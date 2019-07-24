@@ -6,6 +6,7 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/AwesomeProject/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "test": "jest",
     "lint": "eslint --fix *.js"
   },
@@ -18,8 +19,8 @@
     "@babel/core": "^7.5.5",
     "@babel/runtime": "^7.5.5",
     "@react-native-community/eslint-config": "^0.0.5",
-    "babel-jest": "^24.8.0",
     "babel-eslint": "^10.0.2",
+    "babel-jest": "^24.8.0",
     "eslint": "^6.0.1",
     "eslint-config-airbnb": "9.0.1",
     "eslint-plugin-import": "1.9.2",
