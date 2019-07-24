@@ -1,15 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
   Text,
-  Alert,
+  StatusBar,
+  Alert
 } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
+import Camera from './src/components/Camera';
 import Header from './src/components/Header';
 import MainScreenButton from './src/components/MainScreenButton';
 
@@ -19,12 +21,14 @@ import LearnMoreIcon from './src/images/learnMoreIcon.png';
 export default class MainApp extends Component {
   constructor(props) {
     super(props);
+    this.enterCamera = this.enterCamera.bind(this);
+    this.exitCamera = this.exitCamera.bind(this);
 
     this.styles = StyleSheet.create({
       sectionTitle: {
         fontSize: 24,
         fontWeight: '600',
-        color: Colors.black,
+        color: Colors.black
       },
       sectionDescription: {
         marginTop: 35,
@@ -38,34 +42,50 @@ export default class MainApp extends Component {
         fontFamily: 'sans-serif-light',
       },
       highlight: {
-        fontWeight: '700',
+        fontWeight: '700'
       },
     });
 
     this.state = {
       isShowingText: 'Loading...',
+      isCameraOpen: false,
     };
   }
-
   onPressButton() {
     Alert.alert('You tapped the button!');
   }
 
+  enterCamera() {
+    this.setState({
+      isCameraOpen: true,
+    });
+  }
+
+  exitCamera() {
+    this.setState({
+      isCameraOpen: false,
+    });
+  }
+
   render() {
-    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#F0F0F0' }}>
-        <Header />
+    let returnValue = '';
+    if (this.state.isCameraOpen) {
+      returnValue = (<Camera
+        onExitCamera={this.exitCamera}
+      />);
+    } else {
+      returnValue = (
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
         >
+          <Header />
           <View>
-            {/* <View>
-              <Text style={this.styles.sectionTitle}>{this.state.isShowingText}</Text>
-            </View> */}
-            <Text style={this.styles.sectionDescription}>Take a picture down below to identify your object as Compost, Recycle, or Landfill.</Text>
+            <Text style={this.styles.sectionDescription}>
+              Take a picture down below to identify your object as Compost, Recycle, or Landfill.
+            </Text>
             <MainScreenButton
               displayText="Take a Picture"
-              onPressButton={this.onPressButton}
+              onPressButton={this.enterCamera}
               image={CameraIcon}
             />
             <MainScreenButton
@@ -74,8 +94,15 @@ export default class MainApp extends Component {
               image={LearnMoreIcon}
             />
           </View>
-        </ScrollView>
-      </SafeAreaView>
+        </ScrollView>);
+    }
+    return (
+      <Fragment>
+        <StatusBar barStyle="dark-content" />
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#F0F0F0' }}>
+          {returnValue}
+        </SafeAreaView>
+      </Fragment>
     );
   }
 }

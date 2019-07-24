@@ -35,8 +35,7 @@ export default class MainScreenButton extends Component {
         overflow: 'visible',
         marginLeft: -65,
         resizeMode: 'contain',
-        scaleX: 1.4,
-        scaleY: 1.4,
+        transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }],
       },
       text: {
         fontSize: 25,

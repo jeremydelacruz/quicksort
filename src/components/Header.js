@@ -10,10 +10,11 @@ export default class Header extends Component {
     super(props);
     this.styles = StyleSheet.create({
       header: {
-        flex: 0.50,
         backgroundColor: '#01796F',
         alignItems: 'center',
         justifyContent: 'center',
+        paddingTop: 20,
+        paddingBottom: 20,
       },
       appNameText: {
         fontWeight: 'bold',
