@@ -12,6 +12,10 @@ import {
 import { CameraKitCameraScreen } from 'react-native-camera-kit';
 
 import Logo from 'react-native/Libraries/NewAppScreen/components/logo.png';
+import FlashAutoIcon from '../images/flashAutoIcon.png';
+import FlashOnIcon from '../images/flashOnIcon.png';
+import FlashOffIcon from '../images/flashOffIcon.png';
+import CameraFlipIcon from '../images/cameraFlipIcon.png';
 import CameraCaptureIcon from '../images/cameraCaptureIcon.png';
 
 export default class Camera extends Component {
@@ -137,11 +141,11 @@ export default class Camera extends Component {
           onBottomButtonPressed={event => this.onBottomButtonPressed(event)}
           flashImages={{
             // Flash button images
-            on: Logo,
-            off: Logo,
-            auto: Logo,
+            on: FlashOnIcon,
+            off: FlashOffIcon,
+            auto: FlashAutoIcon,
           }}
-          cameraFlipImage={Logo}
+          cameraFlipImage={CameraFlipIcon}
           captureButtonImage={CameraCaptureIcon}
         />
       );
