@@ -6,10 +6,6 @@ import {
   View,
   Text,
   StatusBar,
-<<<<<<< HEAD
-  TouchableOpacity,
-=======
->>>>>>> 037378db9f73fa738323b9449db12cfc5daa582e
   Alert
 } from 'react-native';
 
