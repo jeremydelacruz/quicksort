@@ -27,10 +27,15 @@ export default class MainApp extends Component {
         color: Colors.black,
       },
       sectionDescription: {
-        marginTop: 8,
-        fontSize: 18,
+        marginTop: 35,
+        paddingTop: 10,
+        paddingBottom: 10,
+        fontSize: 15,
         fontWeight: '400',
         color: Colors.dark,
+        backgroundColor: Colors.light,
+        textAlign: 'center',
+        fontFamily: 'sans-serif-light',
       },
       highlight: {
         fontWeight: '700',
@@ -42,31 +47,22 @@ export default class MainApp extends Component {
     };
   }
 
-  componentDidMount() {
-    fetch('https://quicksort-api.azurewebsites.net/api/?name=Gui')
-      .then(response => response.json())
-      .then(response => {
-        this.setState({
-          isShowingText: response,
-        });
-      });
-  }
-
   onPressButton() {
     Alert.alert('You tapped the button!');
   }
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#F0F0F0' }}>
         <Header />
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
         >
           <View>
-            <View>
+            {/* <View>
               <Text style={this.styles.sectionTitle}>{this.state.isShowingText}</Text>
-            </View>
+            </View> */}
+            <Text style={this.styles.sectionDescription}>Take a picture down below to identify your object as Compost, Recycle, or Landfill.</Text>
             <MainScreenButton
               displayText="Take a Picture"
               onPressButton={this.onPressButton}

@@ -14,34 +14,35 @@ export default class MainScreenButton extends Component {
     super(props);
     this.styles = StyleSheet.create({
       buttonContainer: {
-        paddingTop: 60,
+        paddingTop: 50,
         alignItems: 'center',
       },
       buttonText: {
         padding: 20,
-        color: 'white'
       },
       background: {
         paddingHorizontal: 32,
         paddingVertical: 20,
         width: 250,
-        backgroundColor: '#dddddd',
+        backgroundColor: 'white',
         borderRadius: 4,
         overflow: 'hidden',
+        borderWidth: 1,
+        borderColor: '#003632',
       },
       logo: {
-        opacity: 0.2,
+        opacity: 0.10,
         overflow: 'visible',
-        resizeMode: 'cover',
-        marginLeft: -32,
-        marginBottom: -32,
-        flex: 0.5
+        marginLeft: -65,
+        resizeMode: 'contain',
+        scaleX: 1.4,
+        scaleY: 1.4,
       },
       text: {
-        fontSize: 40,
-        fontWeight: '600',
+        fontSize: 25,
         textAlign: 'center',
-        color: '#585858',
+        color: '#003632',
+        fontFamily: 'notoserif',
       },
     });
   }
