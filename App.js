@@ -6,7 +6,8 @@ import {
   View,
   Text,
   StatusBar,
-  Alert
+  Alert,
+  Platform,
 } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -30,7 +31,7 @@ export default class MainApp extends Component {
         fontWeight: '600',
         color: Colors.black
       },
-      sectionDescription: {
+      sectionDescriptionANDROID: {
         marginTop: 35,
         paddingTop: 10,
         paddingBottom: 10,
@@ -43,6 +44,17 @@ export default class MainApp extends Component {
       },
       highlight: {
         fontWeight: '700'
+      },
+      sectionDescriptionIOS: {
+        marginTop: 35,
+        paddingTop: 10,
+        paddingBottom: 10,
+        fontSize: 15,
+        fontWeight: '400',
+        color: Colors.dark,
+        backgroundColor: Colors.light,
+        textAlign: 'center',
+        fontFamily: 'HelveticaNeue-Light',
       },
     });
 
@@ -67,6 +79,15 @@ export default class MainApp extends Component {
     });
   }
 
+  fontPlatform() {
+    if(Platform.OS === 'ios') {
+      return this.styles.sectionDescriptionIOS;
+    }
+    else {
+      return this.styles.sectionDescriptionANDROID;
+    }
+  }
+
   render() {
     let returnValue = '';
     if (this.state.isCameraOpen) {
@@ -80,7 +101,7 @@ export default class MainApp extends Component {
         >
           <Header />
           <View>
-            <Text style={this.styles.sectionDescription}>
+            <Text style={this.fontPlatform()}>
               Take a picture down below to identify your object as Compost, Recycle, or Landfill.
             </Text>
             <MainScreenButton
