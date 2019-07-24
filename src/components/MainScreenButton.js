@@ -37,13 +37,28 @@ export default class MainScreenButton extends Component {
         resizeMode: 'contain',
         transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }],
       },
-      text: {
+      textANDROID: {
         fontSize: 25,
         textAlign: 'center',
         color: '#003632',
         fontFamily: 'notoserif',
       },
+      textIOS: {
+        fontSize: 25,
+        textAlign: 'center',
+        color: '#003632',
+        fontFamily: 'HelveticaNeue-Thin',
+      },
     });
+  }
+
+  fontPlatform() {
+    if(Platform.OS === 'ios') {
+      return this.styles.textIOS;
+    }
+    else {
+      return this.styles.textANDROID;
+    }
   }
 
   render() {
@@ -56,7 +71,7 @@ export default class MainScreenButton extends Component {
             style={this.styles.background}
             imageStyle={this.styles.logo}
           >
-            <Text style={this.styles.text}>{this.props.displayText}</Text>
+            <Text style={this.fontPlatform()}>{this.props.displayText}</Text>
           </ImageBackground>
         </TouchableOpacity>
       </View>

@@ -16,19 +16,34 @@ export default class Header extends Component {
         paddingTop: 20,
         paddingBottom: 20,
       },
-      appNameText: {
+      appNameTextANDROID: {
         fontWeight: 'bold',
         fontFamily: 'sans-serif-medium',
+        color: 'white',
+        fontSize: 48,
+      },
+      appNameTextIOS: {
+        fontWeight: 'bold',
+        fontFamily: 'HelveticaNeue-Bold',
         color: 'white',
         fontSize: 48,
       },
     });
   }
 
+  fontPlatform() {
+    if(Platform.OS === 'ios') {
+      return this.styles.appNameTextIOS;
+    }
+    else {
+      return this.styles.appNameTextANDROID;
+    }
+  }
+
   render() {
     return (
       <View style={this.styles.header}>
-        <Text style={this.styles.appNameText}>QuickSort</Text>
+        <Text style={this.fontPlatform()}>QuickSort</Text>
       </View>
     );
   }
