@@ -6,7 +6,8 @@ import {
   View,
   Text,
   StatusBar,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 
 import { Header, Colors } from 'react-native/Libraries/NewAppScreen';
@@ -18,6 +19,7 @@ export default class BlinkApp extends Component {
     super(props);
     this.enterCamera = this.enterCamera.bind(this);
     this.exitCamera = this.exitCamera.bind(this);
+    this.sendPhoto = this.sendPhoto.bind(this);
 
     this.styles = StyleSheet.create({
       engine: {
@@ -72,6 +74,7 @@ export default class BlinkApp extends Component {
     this.state = {
       isShowingText: 'Loading...',
       isCameraOpen: false,
+      photoResponse: '',
     };
   }
 
@@ -85,6 +88,49 @@ export default class BlinkApp extends Component {
     this.setState({
       isCameraOpen: false,
     });
+  }
+
+  confirmPhoto = () => {
+    Alert.alert(
+      'Confirm Photo',
+      'Do you want to submit this photo to be analyzed?',
+      [
+        {
+          text: 'Yes',
+          onPress: () => this.sendPhoto()
+        },
+        {
+          text: 'No',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false },
+    );
+  }
+
+  sendPhoto = () => {
+    let endpoint = "https://quicksort-api.azurewebsites.net/api/url?method=analyze";
+    let payload = {
+      url: "http://www.altacrystalresort.com/images/uploads/homepage/home-rainier-fall.jpg"
+    };
+    let options = {
+      method: 'post',
+      mode: 'cors',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+    };
+
+    fetch(endpoint, options)
+      .then(response => response.json())
+      .then(response => {
+        this.setState({
+          photoResponse: response
+        });
+      });
   }
 
   render() {
@@ -112,6 +158,17 @@ export default class BlinkApp extends Component {
               <Text>Open Camera</Text>
             </TouchableOpacity>
           </View>
+
+          <View style={this.styles.container}>
+            <TouchableOpacity
+              style={this.styles.button}
+              onPress={this.confirmPhoto}
+            >
+              <Text>Confirm Photo (Test)</Text>
+            </TouchableOpacity>
+            <Text>{JSON.stringify(this.state.photoResponse)}</Text>
+          </View>
+
         </View>
       </ScrollView>);
     }
