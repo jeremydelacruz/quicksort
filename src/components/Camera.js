@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 
 import { CameraKitCameraScreen } from 'react-native-camera-kit';
+import RNFS from 'react-native-fs';
 
-import Logo from 'react-native/Libraries/NewAppScreen/components/logo.png';
 import FlashAutoIcon from '../images/flashAutoIcon.png';
 import FlashOnIcon from '../images/flashOnIcon.png';
 import FlashOffIcon from '../images/flashOffIcon.png';
@@ -41,27 +41,6 @@ export default class Camera extends Component {
 
   componentDidMount() {
     this.onPress();
-  }
-
-  confirmPhoto = () => {
-    Alert.alert(
-      'Confirm Photo',
-      'Do you want to submit this photo to be analyzed?',
-      [
-        {
-          text: 'Yes',
-          onPress: () => {
-            this.props.onExitCamera(this.sendPhoto);
-          }
-        },
-        {
-          text: 'No',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-      ],
-      { cancelable: false },
-    );
   }
 
   onPress() {
@@ -140,11 +119,12 @@ export default class Camera extends Component {
   }
 
   onBottomButtonPressed(event) {
-    const captureImages = JSON.stringify(event.captureImages);
+    this.readTextFile(event.captureImages[0].uri);
+    const captureImages = JSON.stringify(event);
     if (event.type === 'left') {
-      this.props.onExitCamera();
+      this.props.onExitCamera(null);
     } if (event.type === 'right') {
-      this.confirmPhoto();
+      this.confirmPhoto(event.captureImages[0].uri);
     } else {
       Alert.alert(
         event.type,
@@ -153,6 +133,36 @@ export default class Camera extends Component {
         { cancelable: false }
       );
     }
+  }
+
+  confirmPhoto = async (path) => {
+    const contents = await RNFS.readFile(path, 'base64');
+    Alert.alert(
+      'Confirm Photo',
+      'Do you want to submit this photo to be analyzed?',
+      [
+        {
+          text: 'Yes',
+          onPress: () => {
+            this.props.onExitCamera(contents);
+          }
+        },
+        {
+          text: 'No',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false },
+    );
+  }
+
+  async readTextFile(file) {
+    const path = file;
+    const contents = await RNFS.readFile(path, 'base64');
+    Alert.alert(contents.toString());
+    // const j = JSON.parse(contents);
+    // Alert.alert(JSON.stringify(j));
   }
 
   render() {

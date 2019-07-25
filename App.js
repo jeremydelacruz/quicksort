@@ -76,12 +76,16 @@ export default class MainApp extends Component {
   }
 
   // pass the image?
-  exitCamera() {
+  exitCamera(contents) {
     this.setState({
       isCameraOpen: false,
     });
 
-    this.sendPhoto()
+    if (contents === null) {
+      return;
+    }
+
+    this.sendPhoto(contents)
       .then(res => {
         Alert.alert(JSON.stringify(res));
         this.setState({
@@ -90,12 +94,12 @@ export default class MainApp extends Component {
       });
   }
 
-  sendPhoto = () => {
-    let endpoint = "https://quicksort-api.azurewebsites.net/api/url?method=analyze";
-    let payload = {
-      url: "http://www.altacrystalresort.com/images/uploads/homepage/home-rainier-fall.jpg"
+  sendPhoto = (contents) => {
+    const endpoint = 'https://quicksort-api.azurewebsites.net/api/base64?method=analyze';
+    const payload = {
+      base64: contents
     };
-    let options = {
+    const options = {
       method: 'post',
       mode: 'cors',
       cache: 'no-cache',
@@ -107,18 +111,14 @@ export default class MainApp extends Component {
 
     return fetch(endpoint, options)
       .then(response => response.json())
-      .then(response => {
-        return response;
-      });
+      .then(response => response);
   }
 
   fontPlatform() {
     if (Platform.OS === 'ios') {
       return this.styles.sectionDescriptionIOS;
     }
-    else {
-      return this.styles.sectionDescriptionANDROID;
-    }
+    return this.styles.sectionDescriptionANDROID;
   }
 
   render() {
