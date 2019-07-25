@@ -39,6 +39,27 @@ export default class Camera extends Component {
     this.onPress();
   }
 
+  confirmPhoto = () => {
+    Alert.alert(
+      'Confirm Photo',
+      'Do you want to submit this photo to be analyzed?',
+      [
+        {
+          text: 'Yes',
+          onPress: () => {
+            this.props.onExitCamera(this.sendPhoto);
+          }
+        },
+        {
+          text: 'No',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false },
+    );
+  }
+
   onPress() {
     const that = this;
     if (Platform.OS === 'android') {
@@ -113,14 +134,13 @@ export default class Camera extends Component {
       this.setState({ isPermitted: true });
     }
   }
+
   onBottomButtonPressed(event) {
     const captureImages = JSON.stringify(event.captureImages);
     if (event.type === 'left') {
       this.props.onExitCamera();
-      this.setState({ isPermitted: false });
     } if (event.type === 'right') {
-      this.props.onExitCamera();
-      this.setState({ isPermitted: false });
+      this.confirmPhoto();
     } else {
       Alert.alert(
         event.type,

@@ -24,7 +24,6 @@ export default class MainApp extends Component {
     super(props);
     this.enterCamera = this.enterCamera.bind(this);
     this.exitCamera = this.exitCamera.bind(this);
-    this.sendPhoto = this.sendPhoto.bind(this);
 
     this.styles = StyleSheet.create({
       sectionTitle: {
@@ -66,35 +65,29 @@ export default class MainApp extends Component {
     };
   }
 
+  learnMore() {
+    Alert.alert("You would've THOUGHT that worked");
+  }
+
   enterCamera() {
     this.setState({
       isCameraOpen: true,
     });
   }
 
+  // pass the image?
   exitCamera() {
     this.setState({
       isCameraOpen: false,
     });
-  }
 
-  confirmPhoto = () => {
-    Alert.alert(
-      'Confirm Photo',
-      'Do you want to submit this photo to be analyzed?',
-      [
-        {
-          text: 'Yes',
-          onPress: () => this.sendPhoto()
-        },
-        {
-          text: 'No',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-      ],
-      { cancelable: false },
-    );
+    this.sendPhoto()
+      .then(res => {
+        Alert.alert(JSON.stringify(res));
+        this.setState({
+          photoResponse: res,
+        });
+      });
   }
 
   sendPhoto = () => {
@@ -112,12 +105,10 @@ export default class MainApp extends Component {
       body: JSON.stringify(payload),
     };
 
-    fetch(endpoint, options)
+    return fetch(endpoint, options)
       .then(response => response.json())
       .then(response => {
-        this.setState({
-          photoResponse: response
-        });
+        return response;
       });
   }
 
@@ -153,7 +144,7 @@ export default class MainApp extends Component {
             />
             <MainScreenButton
               displayText="Learn More"
-              onPressButton={this.confirmPhoto}
+              onPressButton={this.learnMore}
               image={LearnMoreIcon}
             />
           </View>
