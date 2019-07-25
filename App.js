@@ -87,7 +87,7 @@ export default class MainApp extends Component {
 
     this.sendPhoto(contents)
       .then(res => {
-        Alert.alert(JSON.stringify(res));
+        Alert.alert(res);
         this.setState({
           photoResponse: res,
         });
@@ -95,7 +95,7 @@ export default class MainApp extends Component {
   }
 
   sendPhoto = (contents) => {
-    const endpoint = 'https://quicksort-api.azurewebsites.net/api/base64?method=analyze';
+    const endpoint = 'https://quicksort-api.azurewebsites.net/api/base64?method=describe';
     const payload = {
       base64: contents
     };
