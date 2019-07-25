@@ -61,10 +61,12 @@ export default class MainApp extends Component {
     this.state = {
       isShowingText: 'Loading...',
       isCameraOpen: false,
+      photoResponse: '',
     };
   }
-  onPressButton() {
-    Alert.alert('You tapped the button!');
+
+  learnMore() {
+    Alert.alert("You would've THOUGHT that worked");
   }
 
   enterCamera() {
@@ -73,14 +75,45 @@ export default class MainApp extends Component {
     });
   }
 
+  // pass the image?
   exitCamera() {
     this.setState({
       isCameraOpen: false,
     });
+
+    this.sendPhoto()
+      .then(res => {
+        Alert.alert(JSON.stringify(res));
+        this.setState({
+          photoResponse: res,
+        });
+      });
+  }
+
+  sendPhoto = () => {
+    let endpoint = "https://quicksort-api.azurewebsites.net/api/url?method=analyze";
+    let payload = {
+      url: "http://www.altacrystalresort.com/images/uploads/homepage/home-rainier-fall.jpg"
+    };
+    let options = {
+      method: 'post',
+      mode: 'cors',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+    };
+
+    return fetch(endpoint, options)
+      .then(response => response.json())
+      .then(response => {
+        return response;
+      });
   }
 
   fontPlatform() {
-    if(Platform.OS === 'ios') {
+    if (Platform.OS === 'ios') {
       return this.styles.sectionDescriptionIOS;
     }
     else {
@@ -111,7 +144,7 @@ export default class MainApp extends Component {
             />
             <MainScreenButton
               displayText="Learn More"
-              onPressButton={this.onPressButton}
+              onPressButton={this.learnMore}
               image={LearnMoreIcon}
             />
           </View>

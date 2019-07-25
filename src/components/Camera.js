@@ -17,7 +17,10 @@ import CameraCaptureIcon from '../images/cameraCaptureIcon.png';
 export default class Camera extends Component {
   constructor(props) {
     super(props);
-    this.onPress();
+
+    this.state = {
+      isPermitted: false,
+    };
 
     this.styles = StyleSheet.create({
       sectionContainer: {
@@ -30,11 +33,33 @@ export default class Camera extends Component {
         color: 'black'
       },
     });
-
-    this.state = {
-      isPermitted: false,
-    };
   }
+
+  componentDidMount() {
+    this.onPress();
+  }
+
+  confirmPhoto = () => {
+    Alert.alert(
+      'Confirm Photo',
+      'Do you want to submit this photo to be analyzed?',
+      [
+        {
+          text: 'Yes',
+          onPress: () => {
+            this.props.onExitCamera(this.sendPhoto);
+          }
+        },
+        {
+          text: 'No',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false },
+    );
+  }
+
   onPress() {
     const that = this;
     if (Platform.OS === 'android') {
@@ -106,18 +131,16 @@ export default class Camera extends Component {
       // Calling the camera permission function
       requestCameraPermission();
     } else {
-      Alert.alert('GOT HERE');
       this.setState({ isPermitted: true });
     }
   }
+
   onBottomButtonPressed(event) {
     const captureImages = JSON.stringify(event.captureImages);
     if (event.type === 'left') {
       this.props.onExitCamera();
-      this.setState({ isPermitted: false });
     } if (event.type === 'right') {
-      this.props.onExitCamera();
-      this.setState({ isPermitted: false });
+      this.confirmPhoto();
     } else {
       Alert.alert(
         event.type,
