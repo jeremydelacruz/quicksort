@@ -119,19 +119,10 @@ export default class Camera extends Component {
   }
 
   onBottomButtonPressed(event) {
-    this.readTextFile(event.captureImages[0].uri);
-    const captureImages = JSON.stringify(event);
     if (event.type === 'left') {
       this.props.onExitCamera(null);
     } if (event.type === 'right') {
       this.confirmPhoto(event.captureImages[0].uri);
-    } else {
-      Alert.alert(
-        event.type,
-        captureImages,
-        [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
-        { cancelable: false }
-      );
     }
   }
 
@@ -155,14 +146,6 @@ export default class Camera extends Component {
       ],
       { cancelable: false },
     );
-  }
-
-  async readTextFile(file) {
-    const path = file;
-    const contents = await RNFS.readFile(path, 'base64');
-    Alert.alert(contents.toString());
-    // const j = JSON.parse(contents);
-    // Alert.alert(JSON.stringify(j));
   }
 
   render() {
